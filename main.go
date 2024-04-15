@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	maxHops    = 3
+	maxHops    = 6
 	hitlerLink = "https://en.wikipedia.org/wiki/Adolf_Hitler"
 )
 
@@ -50,7 +50,7 @@ func searchHitler(startLink string) []string {
 	queue := linkQueue{}
 	visited := make(map[string]bool)
 	paths := make(map[string][]string)
-	hops := make(map[string]int) // Track the number of hops for each link
+	hops := make(map[string]int) 
 	queue.enqueue(startLink)
 	visited[startLink] = true
 	paths[startLink] = []string{startLink}
@@ -58,19 +58,13 @@ func searchHitler(startLink string) []string {
 
 	for len(queue.links) > 0 {
 		currentLink := queue.dequeue()
-
-		// Check if the maximum number of hops is reached
 		if hops[currentLink] > maxHops {
 			return nil
 		}
-
-		// Skip certain links
 		if skipLink(currentLink) {
 			continue
 		}
-
-		fmt.Println("Checking:", currentLink)
-
+		//fmt.Println("Checking:", currentLink)
 		resp, err := http.Get(currentLink)
 		if err != nil {
 			fmt.Println("Error fetching page:", err)
